@@ -2,8 +2,7 @@
 include "db_config.php";
 
 	class User{
-		
-
+	
 		public $db;
 
 		public function __construct(){
@@ -15,8 +14,7 @@ include "db_config.php";
 			}
 		}
 
-
-
+		//get Model Details by Detail ID
 		public function get_model_details($model_id)
 		{
 
@@ -36,8 +34,8 @@ include "db_config.php";
 		return $result;
 			
 		}
-
 		
+		// get manufacturer lists
 		public function get_manufacturer_lists(){
 
 			$sql="SELECT * FROM manufacturer_tb order by manufacturer_id DESC ";	
@@ -47,8 +45,9 @@ include "db_config.php";
 			
 		}
 
-		public function get_model_lists(){
 
+		//get Inventory Lists
+		public function get_model_lists(){
 
 			$sql="SELECT * FROM model_tb as table1 INNER JOIN manufacturer_tb as table2 ON table1.manufacturer_id = table2.manufacturer_id order by model_id DESC";
 
@@ -58,19 +57,7 @@ include "db_config.php";
 			
 		}
 
-
-		public function get_row_count($table,$cond){
-
-			$sql2="SELECT COUNT(*) FROM $table where 1 $cond";
-			
-			$result = mysqli_query($this->db,$sql2);
-			$row = mysqli_fetch_row($result);   
-        
-        	return $row[0];
-			
-		}
-
-
+		//Add New Manufaturer
 		public function add_new_manufaturer($manufaturer_name)
 		{
 		
@@ -80,6 +67,7 @@ include "db_config.php";
 
 		}
 
+		// Upload Model Images
 		public function add_images($model_id,$image_name)
 		{
 		
@@ -90,7 +78,7 @@ include "db_config.php";
 		}
 
 
-		
+		// add new Inventory
 		public function add_new_model($model_id,$model_name, $model_color,$model_manufacturer_year,$manufacturer_id,$count,$registration_number,$note)
 		{
 				
@@ -102,6 +90,7 @@ include "db_config.php";
         	return $result;
 		}
 
+		//delete inventory
 
 		public function delete_model($model_id){
 			
@@ -112,6 +101,17 @@ include "db_config.php";
 			return $result;
 		}
 
+		// get row count from custom table
+		public function get_row_count($table,$cond){
+
+			$sql2="SELECT COUNT(*) FROM $table where 1 $cond";
+			
+			$result = mysqli_query($this->db,$sql2);
+			$row = mysqli_fetch_row($result);   
+        
+        	return $row[0];
+			
+		}
 	
 	}
 ?>

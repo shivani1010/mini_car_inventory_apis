@@ -1,20 +1,21 @@
 <?php
-
-
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Http\UploadedFile;
-//use Slim\Factory\AppFactory;
 
 require '../vendor/autoload.php';
 require '../assets/php/class.user.php';
 
 //$app = new \Slim\App;
-$app = new \Slim\App(['settings' => ['displayErrorDetails' => true,'addContentLengthHeader' => false]]);
+$app = new \Slim\App(['settings' => ['displayErrorDetails' => false,'addContentLengthHeader' => false]]);
 
+// Upload images in uploads folder
 $container = $app->getContainer();
 $container['upload_directory'] = __DIR__ . '/uploads';
 
+
+
+//fetch model details by model id
 $app->get('/model_details/{model_id}', function ($request, $response, $args) {
 
 	$model_id=$args['model_id'];
@@ -27,6 +28,8 @@ $app->get('/model_details/{model_id}', function ($request, $response, $args) {
 	});
 
 
+
+// fetch manufacturer lists
 	$app->get('/manufacturer_lists', function ($request, $response, $args) {
 
 		$user = new User();
@@ -46,7 +49,8 @@ $app->get('/model_details/{model_id}', function ($request, $response, $args) {
 			return $response->write($jsondata);
 		});
 
-
+		
+// Fetch Inventory lists
 		$app->get('/model_lists', function ($request, $response, $args) {
 
 			$user = new User();
@@ -75,11 +79,9 @@ $app->get('/model_details/{model_id}', function ($request, $response, $args) {
 	
 
 
-
+// Add Manufacturer
 $app->post('/add_manufacturer', function (Request $request, Response $response) {
     
-    
-      
         $requestData = $request->getParsedBody();
         $manufacturer_name = $requestData['manufacturer_name'];
        
@@ -101,6 +103,7 @@ $app->post('/add_manufacturer', function (Request $request, Response $response) 
    
 });
 
+//Upload images
 $app->post('/upload_images', function(Request $request, Response $response) {
 	$requestData = $request->getParsedBody();
 	$model_id = $requestData['model_id'];
